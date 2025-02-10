@@ -1,0 +1,645 @@
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New4th - Ragnarok Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="glowing-particles"></div>
+
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand logo" href="#">
+            <img src="https://dc774.4shared.com/img/np8sOpoLjq/s24/191c4e2ce60/logo?async&rand=0.39932459068387605" alt="New4th Logo" style="height: 75px;">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#about"><i class="fas fa-info-circle"></i> Sobre</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#classes"><i class="fas fa-user-shield"></i> Classes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#events"><i class="fas fa-calendar-alt"></i> Eventos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#donate"><i class="fas fa-hand-holding-heart"></i> Doações</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#download"><i class="fas fa-download"></i> Download</a>
+              </li>
+              <li class="nav-item">
+                <button id="darkModeToggle" class="btn btn-outline-primary">
+                  <i id="darkModeIcon" class="fas fa-moon"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="hero">
+        <h1 class="animate__animated animate__fadeIn">Bem-vindo ao New4th</h1>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">Ragnarok Online - New Era</p>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">Experimente Ragnarok Online como nunca antes! New4th traz a era das 4th Classes com balanceamento, conteúdo inédito e desafios renovados. Escolha sua classe e embarque em uma jornada épica!</p>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">O servidor está prestes a abrir suas portas. Prepare-se para a nova era de Ragnarok!</p>
+        <div id="countdown" class="animate__animated animate__fadeIn animate__delay-2s">Servidor abre em: <span id="timer"></span></div>
+
+        <div class="class-slider-container animate__animated animate__fadeIn animate__delay-3s">
+          <button class="slider-control prev" onclick="plusSlides(-4)">&#10094;</button>
+          <div class="class-slide">
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/igmagicpng.png" alt="Dragon Knight">
+              <p>Dragon Knight</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/dkibpng.png" alt="Imperial Guard">
+              <p>Imperial Guard</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/amcapng.png" alt="Arch Mage">
+              <p>Arch Mage</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/emdotpng.png" alt="Elemental Master">
+              <p>Elemental Master</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/cnsuppng.png" alt="Cardinal">
+              <p>Cardinal</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/igexplopng.png" alt="Inquisitor">
+              <p>Inquisitor</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/blcritpng.png" alt="Biolo">
+              <p>Biolo</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/mcarmpng.png" alt="Meister">
+              <p>Meister</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/tbphyspng.png" alt="Trovador">
+              <p>Trovador</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/tvphyspng.png" alt="Musa">
+              <p>Musa</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/whpng.png" alt="Sentinela">
+              <p>Sentinela</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/abcbowpng.png" alt="Abyss Chaser">
+              <p>Abyss Chaser</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/shceternalpng.png" alt="Shadow Cross">
+              <p>Shadow Cross</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/hnmagicpng.png" alt="Hyper Novice">
+              <p>Hyper Novice</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/nwguncripng.png" alt="Night Watch">
+              <p>Night Watch</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/skmeleepng.png" alt="Shinkiro">
+              <p>Shinkiro</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/shnpng.png" alt="Shiranui">
+              <p>Shiranui</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/semoonpng.png" alt="Sky Emperor">
+              <p>Sky Emperor</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/sasoulpng.png" alt="Soul Ascetic">
+              <p>Soul Ascetic</p>
+            </div>
+            <div class="class-item-slider">
+              <img src="https://tiermaker.com/images/template_images/2022/15217396/ragnarok-online-4th-classes-with-builds-15217396/sphphyspng.png" alt="Spirit Handler">
+              <p>Spirit Handler</p>
+            </div>
+          </div>
+          <button class="slider-control next" onclick="plusSlides(4)">&#10095;</button>
+        </div>
+
+        <a href="https://new4th-ro.com/play" class="cta-button animate__animated animate__fadeIn animate__delay-4s" id="startButton">Comece sua Aventura</a>
+      </div>
+
+      <div class="content-wrapper">
+        <section id="info-banners" class="section animate__animated animate__fadeIn">
+          <h2>Informações Importantes</h2>
+          <p class="text-center mb-4">Conheça os sistemas exclusivos do New4th Ragnarok Online, criados para aprimorar sua experiência de jogo!</p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="donation-option banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Sistema de Refinamento" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Sistema de Refinamento</h3>
+                <p>Aprimore seus equipamentos com segurança e maximize seu poder. Com nosso sistema de refinamento, você pode aumentar os atributos do seu equipamento sem medo de perder seus itens. Utilize minérios especiais para garantir o sucesso no seu refinamento.</p>
+                <p>Nosso sistema garante que cada refinamento seja uma melhoria, permitindo que você se concentre em aprimorar suas habilidades e enfrentar os desafios do jogo com confiança. Com o sistema de refinamento, você sempre terá a garantia de que seus esforços serão recompensados, permitindo que você se destaque na sua jornada.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="donation-option banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Sistema de Recompensas" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Sistema de Recompensas Diárias</h3>
+                <p>Receba recompensas diárias ao fazer login. Quanto mais dias consecutivos você se conectar, melhores serão os prêmios! Não perca a chance de obter itens exclusivos, consumíveis e benefícios que vão impulsionar sua jornada no jogo.</p>
+                <p>Desde poções e equipamentos até bônus de experiência e itens raros, cada dia de login traz algo novo e valioso para ajudá-lo em sua aventura. Além disso, ao acumular dias consecutivos de login, você desbloqueia recompensas ainda maiores, garantindo que sua lealdade seja recompensada com benefícios exclusivos e vantagens adicionais.</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="donation-option banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Sistema de Classes 4th" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Sistema de Classes 4th</h3>
+                <p>Explore as novas classes 4th com balanceamento exclusivo e habilidades inéditas. Cada classe foi cuidadosamente desenvolvida para proporcionar uma experiência única e desafiadora. Descubra novos combos, estratégias e torne-se um mestre em sua classe favorita.</p>
+                <p>Com árvores de habilidades expandidas e opções de personalização aprimoradas, os jogadores têm a liberdade de moldar seus personagens de acordo com seu estilo de jogo preferido. Seja você um mestre das artes marciais, um mago elemental ou um guerreiro implacável, as classes 4th oferecem uma experiência rica e envolvente que eleva o mundo de Ragnarok Online a novos patamares.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="donation-option banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Sistema de Eventos" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Sistema de Eventos Semanais</h3>
+                <p>Participe de eventos semanais emocionantes com premiações exclusivas. Desafie seus amigos, forme equipes e mostre suas habilidades em nossos eventos temáticos. Prepare-se para muita ação, diversão e recompensas incríveis!</p>
+                <p>De torneios PvP e caça aos monstros a desafios de habilidade e missões cooperativas, sempre há algo acontecendo para manter os jogadores engajados e entretidos. Além disso, os eventos semanais oferecem a oportunidade de ganhar prêmios exclusivos, como itens raros, equipamentos poderosos e bônus de experiência, tornando cada participação uma chance de fortalecer seu personagem e alcançar novos patamares de poder.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" class="section animate__animated animate__fadeIn">
+          <h2>Sobre o Servidor</h2>
+          <div class="info-container">
+            <div class="info-card floating">
+              <h3><i class="fas fa-star"></i> Rates</h3>
+              <p>Taxa de EXP: 9999x</p>
+              <p>Evolua seu personagem rapidamente e mergulhe na ação!</p>
+            </div>
+            <div class="info-card floating">
+              <h3><i class="fas fa-gem"></i> Drops</h3>
+              <p>Taxa de Drop: 9999x</p>
+              <p>Encontre itens raros e equipamentos incríveis com facilidade!</p>
+            </div>
+            <div class="info-card floating">
+              <h3><i class="fas fa-globe-americas"></i> Instâncias</h3>
+              <p>Explore diversas instâncias e desafios exclusivos do New4th!</p>
+            </div>
+            <div class="info-card floating">
+              <h3><i class="fas fa-balance-scale"></i> Classes 4th</h3>
+              <p>Todas as classes 4th estão implementadas com balanceamento único</p>
+              <p>Domine as novas habilidades e poderes!</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="classes" class="section animate__animated animate__fadeIn">
+          <h2>Classes e Sub-classes</h2>
+
+          <h3>Classes 4th</h3>
+          <div class="classes-container">
+            <a href="https://www.divine-pride.net/tools/skilltree/4252" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/2/24/ClassIconDragonKnight.png" alt="Dragon Knight" class="class-icon">
+              <span class="class-name">Dragon Knight</span>
+              <span class="tooltiptext">
+                Dragon Knight: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4253" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/f/f3/ClassIconImperialGuard.png" alt="Imperial Guard" class="class-icon">
+              <span class="class-name">Imperial Guard</span>
+              <span class="tooltiptext">
+                Imperial Guard: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4254" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/d/dd/ClassIconArchMage.png" alt="Arch Mage" class="class-icon">
+              <span class="class-name">Arch Mage</span>
+              <span class="tooltiptext">
+                Arch Mage: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4255" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/0/04/ClassIconElementalMaster.png" alt="Elemental Master" class="class-icon">
+              <span class="class-name">Elemental Master</span>
+              <span class="tooltiptext">
+                Elemental Master: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4256" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/d/df/ClassIconWindHawk.png" alt="Wind Hawk" class="class-icon">
+              <span class="class-name">Wind Hawk</span>
+              <span class="tooltiptext">
+                Wind Hawk: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4257" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/0/0b/ClassIconTroubadour.png" alt="Troubadour" class="class-icon">
+              <span class="class-name">Troubadour</span>
+              <span class="tooltiptext">
+                Troubadour: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4258" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/5/5e/ClassIconTrouvere.png" alt="Trouvere" class="class-icon">
+              <span class="class-name">Trouvere</span>
+              <span class="tooltiptext">
+                Trouvere: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4259" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/f/fe/ClassIconMeister.png" alt="Meister" class="class-icon">
+              <span class="class-name">Meister</span>
+              <span class="tooltiptext">
+                Meister: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4260" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/1/11/ClassIconBiolo.png" alt="Biolo" class="class-icon">
+              <span class="class-name">Biolo</span>
+              <span class="tooltiptext">
+                Biolo: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4261" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/4/4e/ClassIconShadowCross.png" alt="Shadow Cross" class="class-icon">
+              <span class="class-name">Shadow Cross</span>
+              <span class="tooltiptext">
+                Shadow Cross: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/42522" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/e/ec/ClassIconAbysschaser.png" alt="Abyss Chaser" class="class-icon">
+              <span class="class-name">Abyss Chaser</span>
+              <span class="tooltiptext">
+                Abyss Chaser: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4263" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/f/fe/ClassIconCardinal.png" alt="Cardinal" class="class-icon">
+              <span class="class-name">Cardinal</span>
+              <span class="tooltiptext">
+                Cardinal: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4264" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/9/94/ClassIconInquisitor.png" alt="Inquisitor" class="class-icon">
+              <span class="class-name">Inquisitor</span>
+              <span class="tooltiptext">
+                Inquisitor: Info here
+              </span>
+            </a>
+          </div>
+
+          <h3>Classes Expandidas</h3>
+          <div class="classes-container">
+            <a href="https://www.divine-pride.net/tools/skilltree/4302" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/1/1e/ClassIconSkyEmperor.png" alt="Sky Emperor" class="class-icon">
+              <span class="class-name">Sky Emperor</span>
+              <span class="tooltiptext">
+                Sky Emperor: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4303" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/f/f3/ClassIconSoulAscetic.png" alt="Soul Ascetic" class="class-icon">
+              <span class="class-name">Soul Ascetic</span>
+              <span class="tooltiptext">
+                Soul Ascetic: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4304" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/1/16/ClassIconShinkiroShiranui.png" alt="Shinkiro" class="class-icon">
+              <span class="class-name">Shinkiro</span>
+              <span class="tooltiptext">
+                Shinkiro: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4305" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/1/16/ClassIconShinkiroShiranui.png" alt="Shiranui" class="class-icon">
+              <span class="class-name">Shiranui</span>
+              <span class="tooltiptext">
+                Shiranui: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4306" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/5/53/ClassIconNightWatch.png" alt="Night Watch" class="class-icon">
+              <span class="class-name">Night Watch</span>
+              <span class="tooltiptext">
+                Night Watch: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4307" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/2/29/ClassIconHN.png" alt="Hyper Novice" class="class-icon">
+              <span class="class-name">Hyper Novice</span>
+              <span class="tooltiptext">
+                Hyper Novice: Info here
+              </span>
+            </a>
+            <a href="https://www.divine-pride.net/tools/skilltree/4308" target="_blank" class="class-item">
+              <img src="https://wiki.ragna4th.com/images/b/ba/ClassIconSpiritHandler.png" alt="Spirit Handler" class="class-icon">
+              <span class="class-name">Spirit Handler</span>
+              <span class="tooltiptext">
+                Spirit Handler: Info here
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <section id="events" class="section animate__animated animate__fadeIn">
+          <h2>Eventos e Premiações</h2>
+          <p class="text-center mb-4">Participe de eventos emocionantes e exclusivos com premiações incríveis!</p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Caça aos MVPs" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Caça aos MVPs</h3>
+                <p>Prepare-se para caçar os MVPs mais desafiadores do servidor!</p>
+                <h4>Regras:</h4>
+                <ul>
+                  <li>Encontre e derrote o MVP.</li>
+                  <li>Faça um vídeo ou tire um print da tela.</li>
+                  <li>Entregue para a administração.</li>
+                </ul>
+                <h4>Prêmio:</h4>
+                <p>Equipamentos raros e cartas de MVP.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Guerra do Emperium" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Guerra do Emperium</h3>
+                <p>Mostre sua força e estratégia na Guerra do Emperium!</p>
+                <h4>Regras:</h4>
+                <ul>
+                  <li>Conquiste e defenda um castelo.</li>
+                  <li>Mantenha o controle pelo maior tempo possível.</li>
+                  <li>Supere as outras guildas.</li>
+                </ul>
+                <h4>Prêmio:</h4>
+                <p>Benefícios exclusivos para a guilda vencedora.</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Eventos Semanais" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Eventos Semanais</h3>
+                <p>Participe de eventos temáticos e ganhe prêmios especiais!</p>
+                <h4>Regras:</h4>
+                <ul>
+                  <li>Acompanhe o calendário de eventos.</li>
+                  <li>Participe das atividades propostas.</li>
+                  <li>Siga as regras de cada evento.</li>
+                </ul>
+                <h4>Prêmio:</h4>
+                <p>Itens raros, zenys e muito mais!</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="banner-item">
+                <img src="https://dc579.4shared.com/img/5_KQMCI0ge/s24/191c992d180/PoliCIAL__3_?async&rand=0.8105597205153627" alt="Sorteios Diários" class="img-fluid mb-3" style="max-width: 497px; max-height: 200px;">
+                <h3>Sorteios Diários</h3>
+                <p>Concorra a prêmios incríveis todos os dias!</p>
+                <h4>Como participar:</h4>
+                <ul>
+                  <li>Esteja online no horário do sorteio.</li>
+                  <li>Seja um membro ativo da comunidade.</li>
+                  <li>Tenha sorte!</li>
+                </ul>
+                <h4>Prêmios:</h4>
+                <ul>
+                  <li>Equipamentos</li>
+                  <li>Consumíveis</li>
+                  <li>Visuais exclusivos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="donate" class="section animate__animated animate__fadeIn">
+          <h2>Doações</h2>
+          <p class="text-center mb-4">Apoie o New4th e ajude-nos a manter o servidor online e com novidades constantes!</p>
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="text-center mb-3">Seu apoio nos ajuda a:</h3>
+              <ul class="list-group">
+                <li class="list-group-item bg-transparent"><i class="fas fa-server text-primary me-2"></i> Manter e melhorar nossa infraestrutura de servidores</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-shield-alt text-primary me-2"></i> Aprimorar a segurança e estabilidade do jogo</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-code text-primary me-2"></i> Desenvolver novos conteúdos e recursos</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-trophy text-primary me-2"></i> Organizar eventos e torneios com premiações exclusivas</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-users text-primary me-2"></i> Expandir nossa equipe de suporte e moderação</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h3 class="text-center mb-3">Benefícios para Doadores:</h3>
+              <ul class="list-group">
+                <li class="list-group-item bg-transparent"><i class="fas fa-star text-warning me-2"></i> Visuais exclusivos</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-tshirt text-warning me-2"></i> Acesso antecipado a novos conteúdos</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-percentage text-warning me-2"></i> Tickets para eventos especiais</li>
+                <li class="list-group-item bg-transparent"><i class="fas fa-box-open text-warning me-2"></i> Cota de zenys</li>
+              </ul>
+            </div>
+          </div>
+          <div class="donation-options mt-5">
+            <div class="donation-option">
+              <h3><i class="fas fa-qrcode"></i> PIX</h3>
+              <p>Use nossa chave PIX para fazer sua doação:</p>
+              <p><img src="https://dc697.4shared.com/img/w9WWmanUjq/s24/191d9a4d500/DoaJoker?async&rand=0.44199621191516836" alt="QR Code PIX" class="img-fluid mb-3" style="max-width: 200px;"></p>
+              <div class="pix-key" id="pixKey">3579a362-8f84-463d-ae13-71d9115ac60c</div>
+            </div>
+            <div class="donation-option">
+              <h3><i class="fab fa-paypal"></i> PayPal</h3>
+              <p class="mb-3">Doe de forma segura e rápida via PayPal</p>
+              <p><img src="https://dc700.4shared.com/img/D8g5jVxDjq/s24/191c593f9d8/QR_Code?async&rand=0.05505744538628843" alt="QR Code PayPal"></p>
+              <a href="https://www.paypal.com/donate?hosted_button_id=W8W67Q9DWZN2U" class="btn btn-primary">Doar com PayPal</a>
+            </div>
+            <div class="donation-option">
+              <h3><i class="fas fa-coins"></i> Crypto</h3>
+              <p>Aceitamos doações em criptomoedas</p>
+              <strong>BTC:</strong>
+              <div class="pix-key">13Gdv56sqjG1c9eCuRBo2HdiyhYtb7THP6</div>
+            </div>
+          </div>
+          <p class="text-center mt-4">Todas as doações serão utilizadas para a manutenção do servidor, melhorias contínuas e para financiar eventos e premiações para nossa comunidade!</p>
+        </section>
+
+        <section id="faq" class="section animate__animated animate__fadeIn">
+          <h2>Perguntas Frequentes</h2>
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Como posso começar a jogar New4th?
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Para começar a jogar New4th, basta criar uma conta em nosso site, baixar o cliente e entrar no jogo. Nosso guia inicial irá guiá-lo pelos primeiros passos.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="youtube" class="section animate__animated animate__fadeIn">
+          <h2>Vídeos Promocionais</h2>
+          <div class="youtube-container">
+            <div class="youtube-player">
+              <div id="player"></div>
+            </div>
+            <div class="youtube-thumbnails">
+              <div class="thumbnail" data-video-id="uox67Jtowhk">
+                <img src="https://img.youtube.com/vi/uox67Jtowhk/mqdefault.jpg" alt="Vídeo 1">
+              </div>
+              <div class="thumbnail" data-video-id="bYGsXYouLgU">
+                <img src="https://img.youtube.com/vi/bYGsXYouLgU/mqdefault.jpg" alt="Vídeo 2">
+              </div>
+              <div class="thumbnail" data-video-id="FW_-LN12mMg">
+                <img src="https://img.youtube.com/vi/FW_-LN12mMg/mqdefault.jpg" alt="Vídeo 3">
+              </div>
+              <div class="thumbnail" data-video-id="z57EWX8nTWk">
+                <img src="https://img.youtube.com/vi/z57EWX8nTWk/mqdefault.jpg" alt="Vídeo 4">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="discord" class="section animate__animated animate__fadeIn">
+          <h2>Junte-se à nossa comunidade no Discord</h2>
+          <div class="text-center">
+            <a href="https://discord.gg/new4thro" class="btn btn-discord btn-lg" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-discord me-2"></i> Entrar no Discord
+            </a>
+          </div>
+        </section>
+
+        <section id="download" class="section animate__animated animate__fadeIn">
+          <h2>Downloads</h2>
+          <div class="download-options">
+            <div class="download-option">
+              <h3>Cliente do Jogo</h3>
+              <p>Baixe a versão mais recente do nosso cliente para jogar New4th.</p>
+              <a href="https://new4th-ro.com/download" class="btn btn-primary" target="_blank">Baixar Cliente</a>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="#">Termos de Serviço</a>
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Contato</a>
+          </div>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <p>&copy; 2024 New4th - Ragnarok Online. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+  <script src="script.js"></script>
+  <script>
+    let slideIndex = 0;
+    const slide = document.querySelector('.class-slide');
+    const classItems = document.querySelectorAll('.class-item-slider');
+    let itemsPerSlide = 4;
+    let totalItems = classItems.length;
+    let numSlides = Math.ceil(totalItems / itemsPerSlide);
+
+    function updateSlidePosition() {
+      slide.style.transform = `translateX(-${slideIndex * (100 / numSlides)}%)`;
+    }
+
+    function plusSlides(n) {
+      slideIndex += n;
+      if (slideIndex > totalItems - itemsPerSlide) {
+        slideIndex = 0;
+      }
+      if (slideIndex < 0) {
+        slideIndex = totalItems - itemsPerSlide;
+      }
+      updateSlidePosition();
+    }
+
+    //Initial setup to ensure the slide displays correctly on load
+    updateSlidePosition();
+
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '360',
+        width: '100%',
+        videoId: 'uox67Jtowhk', 
+        playerVars: {
+          'rel': 0, 
+          'showinfo': 0 
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      // Do something when the player is ready.
+    }
+
+    function onPlayerStateChange(event) {
+      // Do something when the player state changes.
+    }
+
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    thumbnails.forEach(thumbnail => {
+      thumbnail.addEventListener('click', () => {
+        const videoId = thumbnail.dataset.videoId;
+        player.loadVideoById(videoId);
+      });
+    });
+  </script>
+  <script async src="https://www.youtube.com/iframe_api"></script>
+</body>
+
+</html>
