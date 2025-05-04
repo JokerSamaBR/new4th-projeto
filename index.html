@@ -1,0 +1,1651 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Ring - New4th</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+            background-color: #1a1a2e;
+            color: #f8f8f8;
+            touch-action: manipulation;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #game-canvas {
+            display: block;
+            background: linear-gradient(to bottom, #6ab7ff 0%, #1a1a2e 100%);
+        }
+        
+        #start-screen, #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10;
+        }
+        
+        #game-over {
+            display: none;
+        }
+        
+        .btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin-top: 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 0 #d43f3f;
+            transition: all 0.1s;
+        }
+        
+        .btn:hover {
+            background-color: #ff8e8e;
+        }
+        
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #d43f3f;
+        }
+        
+        .title {
+            font-size: 3rem;
+            text-shadow: 5px 5px 0 #ff6b6b;
+            margin-bottom: 2rem;
+            color: #f8f8f8;
+            text-align: center;
+        }
+        
+        .score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            z-index: 5;
+            color: white;
+            text-shadow: 2px 2px 0 #000;
+        }
+        
+        .ro-style {
+            border: 4px solid #ff6b6b;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: rgba(26, 26, 46, 0.9);
+            text-align: center;
+        }
+        
+        /* Animação do Poring */
+        @keyframes poringFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .poring-float {
+            animation: poringFloat 2s ease-in-out infinite;
+        }
+        
+        /* Efeito de brilho */
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9)); }
+            100% { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7)); }
+        }
+        
+        .glow-effect {
+            animation: glow 2s infinite;
+        }
+        
+        /* Efeito de pulo */
+        @keyframes jumpEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .jump-effect {
+            animation: jumpEffect 0.3s;
+        }
+
+        /* Novas animações para PowerUps */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        .powerup {
+            animation: pulse 1.5s infinite, spin 3s infinite linear;
+        }
+        
+        /* Enhanced Poring Animations */
+        @keyframes poringHover {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(-5deg); }
+            75% { transform: translateY(10px) rotate(5deg); }
+        }
+
+        @keyframes poringPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes poringJump {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        .poring-hover {
+            transition: all 0.3s ease;
+            animation: 
+                poringHover 2s ease-in-out infinite, 
+                poringPulse 3s ease-in-out infinite alternate;
+        }
+
+        .poring-hover:hover {
+            transform: scale(1.1) rotate(0deg);
+            filter: brightness(1.2);
+        }
+
+        .poring-jump-effect {
+            animation: poringJump 0.5s ease-out;
+        }
+
+        /* Menu Poring Styling */
+        #start-screen .poring-float {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        #start-screen .poring-float:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.7));
+        }
+        
+        /* Barra de progresso (modo progressão) */
+        #progress-container {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 200px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 5;
+        }
+        
+        #progress-bar {
+            height: 100%;
+            background-color: #ff6b6b;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Painel de status */
+        #status-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            z-index: 5;
+        }
+        
+        .status-item {
+            margin-bottom: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        
+        /* Updated Poring Animations */
+        @keyframes poringFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .poring-float {
+            animation: poringFloat 2s ease-in-out infinite;
+        }
+        
+        /* New style for music control */
+        #music-control {
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 10; 
+            padding: 100px; 
+            display: none; /* Always visible */
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        #music-control:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <button id="music-control" class="btn" style="
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 20; 
+            padding: 10px; 
+            display: none; /* Changed from block to none */
+        ">🎵</button>
+        <div class="score" id="score">0</div>
+        <div class="score" id="coins" style="left: auto; right: 20px;">Zeny: 0</div>
+        
+        <div id="progress-container" style="display: none;">
+            <div id="progress-bar"></div>
+        </div>
+        
+        <div id="status-panel">
+            <!-- Status effects will be added here dynamically -->
+        </div>
+        
+        <div id="start-screen" class="ro-style">
+            <div class="menu-header" style="display: flex; align-items: center; margin-bottom: 2rem;">
+                <img src="poring.gif" alt="Poring" style="width: 50px; height: 50px; margin-right: 20px;" class="glow-effect poring-hover">
+                <h1 class="title">FLAPPY RING</h1>
+            </div>
+            
+            <div class="menu-background" style="
+                background-image: url('4BwINGw.jpg');
+                background-size: cover;
+                background-position: center;
+                width: 50%;
+                height: 400px;
+                margin-bottom: 1rem;
+                border-radius: 10px;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            ">
+                <div style="
+                    background: rgba(26, 26, 46, 0.7);
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    text-align: center;
+                ">
+                    <p>Use SPACE or CLICK to make Poring jump!</p>
+                    <p>Collect zeny and powerups!</p>
+                </div>
+            </div>
+            
+            <div class="flex space-x-4 mt-4">
+                <button class="btn game-mode-btn" id="mode-classic">
+                    <img src="Classico.gif" alt="Classic Mode" style="width: margin-right: 10px;">
+                    CLASSIC
+                </button>
+                <button class="btn game-mode-btn" id="mode-progression">
+                    <img src="Aventura.gif" alt="Adventure Mode" style="width: margin-right: 10px;">
+                    ADVENTURE
+                </button>
+            </div>
+            
+            <div class="mt-8 text-xs">
+                <p>Flappy Ring - Game</p>
+                <p>New4th &copy; Ignition Services Co., Ltd.</p>
+            </div>
+        </div>
+        
+        <div id="game-over" class="ro-style">
+            <h1 class="title">GAME OVER</h1>
+            <p id="final-score">Score: 0 | Zeny: 0</p>
+            <p id="powerups-used" class="mt-2">Powerups Used: 0</p>
+            
+            <!-- New nickname input section -->
+            <div id="high-score-input" class="mt-4">
+                <input 
+                    type="text" 
+                    id="nickname-input" 
+                    placeholder="Enter Your Nickname" 
+                    maxlength="12" 
+                    class="p-2 text-center border-2 border-pink-500 rounded"
+                >
+                <button 
+                    id="save-nickname-btn" 
+                    class="btn mt-2"
+                >
+                    SAVE NICKNAME
+                </button>
+            </div>
+            
+            <p id="high-score" class="mt-4">High Score: 0</p>
+            <button class="btn jump-effect" id="restart-btn">TRY AGAIN</button>
+            <button class="btn jump-effect mt-4" id="menu-btn">MENU</button>
+        </div>
+
+    <audio id="background-music" loop>
+        <source src="New4th.mp3" type="audio/mpeg">
+    </audio>
+        
+        <canvas id="game-canvas"></canvas>
+    </div>
+
+    <script>
+        // ... existing code ...
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const backgroundMusic = document.getElementById('background-music');
+            const musicControl = document.getElementById('music-control');
+            let isMusicPlaying = false;
+
+            // Auto-start music when game starts
+            function startMusic() {
+                backgroundMusic.play().catch(e => console.log("Music autoplay prevented", e));
+                isMusicPlaying = true;
+                musicControl.textContent = '🔊';
+            }
+
+            // Toggle music on/off
+            function toggleMusic() {
+                if (isMusicPlaying) {
+                    backgroundMusic.pause();
+                    musicControl.textContent = '🔇';
+                    isMusicPlaying = false;
+                } else {
+                    backgroundMusic.play();
+                    musicControl.textContent = '🔊';
+                    isMusicPlaying = true;
+                }
+            }
+
+            // Music control events
+            musicControl.addEventListener('click', toggleMusic);
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            const startScreen = document.getElementById('start-screen');
+            const gameOverScreen = document.getElementById('game-over');
+            const classicModeBtn = document.getElementById('mode-classic');
+            const progressionModeBtn = document.getElementById('mode-progression');
+            const restartBtn = document.getElementById('restart-btn');
+            const menuBtn = document.getElementById('menu-btn');
+            const scoreDisplay = document.getElementById('score');
+            const coinsDisplay = document.getElementById('coins');
+            const finalScoreDisplay = document.getElementById('final-score');
+            const powerupsUsedDisplay = document.getElementById('powerups-used');
+            const highScoreDisplay = document.getElementById('high-score');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const statusPanel = document.getElementById('status-panel');
+            
+            // Set canvas size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Game variables
+            let gameRunning = false;
+            let gameMode = 'classic'; // 'classic' or 'progression'
+            let score = 0;
+            let coins = 0;
+            let powerupsUsed = 0;
+            let highScore = localStorage.getItem('flappyPoringHighScore') || 0;
+            let highCoins = localStorage.getItem('flappyPoringHighZeny') || 0;
+            let animationId;
+            let lastTime = 0;
+            let deltaTime = 0;
+            let levelProgress = 0;
+            let currentLevel = 1;
+            let gameSpeed = 1;
+            
+            // Active powerups
+            let activePowerups = {
+                shield: false,
+                magnet: false,
+                speed: false,
+                shrink: false
+            };
+            
+            // Powerup durations
+            let powerupTimers = {
+                shield: 0,
+                magnet: 0,
+                speed: 0,
+                shrink: 0
+            };
+            
+            // Game objects
+            const poring = {
+                x: 100,
+                y: canvas.height / 2,
+                width: 60,
+                height: 60,
+                velocity: 0,
+                gravity: 0.5,
+                jumpForce: -12,
+                rotation: 0,
+                rotationSpeed: 0,
+                originalWidth: 60,
+                originalHeight: 60
+            };
+            
+            let pipes = [];
+            let coinsArray = [];
+            let powerupsArray = [];
+            let clouds = [];
+            let backgroundElements = [];
+            let particles = [];
+            let effects = [];
+            
+            // Load PNG images instead of SVG data URLs
+            const poringImg = new Image();
+            poringImg.src = 'poring.gif';
+            
+            // Coin image (RO-style zeny)
+            const coinImg = new Image();
+            coinImg.src = 'coin.png';
+            
+            // Improved obstacle images (RO-themed)
+            const topObstacleImg = new Image();
+            topObstacleImg.src = 'top_pipe.png';
+            
+            const bottomObstacleImg = new Image();
+            bottomObstacleImg.src = 'bottom_pipe.png';
+            
+            // Improved background castle
+            const bgCastleImg = new Image();
+            bgCastleImg.src = 'Neww4.png';
+            
+            // PowerUp SVG icons
+            const powerupIcons = {
+                shield: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25,2 L5,10 L5,30 C5,40 25,48 25,48 C25,48 45,40 45,30 L45,10 L25,2 Z" fill="#4fc3f7" stroke="#0277bd" stroke-width="2"/>
+                    <circle cx="25" cy="25" r="10" fill="#b3e5fc" fill-opacity="0.7"/>
+                    <path d="M20,20 L30,30 M30,20 L20,30" stroke="#0277bd" stroke-width="3" stroke-linecap="round"/>
+                </svg>`,
+                
+                magnet: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10,10 L10,40 L16,40 L16,30 A9,9 0 0 1 34,30 L34,40 L40,40 L40,10 L34,10 L34,20 A9,9 0 0 0 16,20 L16,10 Z" fill="#f44336" stroke="#b71c1c" stroke-width="2"/>
+                    <circle cx="25" cy="20" r="5" fill="#ffcdd2"/>
+                </svg>`,
+                
+                speed: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="25" cy="25" r="20" fill="#76ff03" stroke="#64dd17" stroke-width="2"/>
+                    <path d="M25,25 L40,15 M25,25 L35,35" stroke="#33691e" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="25" cy="25" r="3" fill="#33691e"/>
+                </svg>`,
+                
+                shrink: `<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="25" cy="25" r="20" fill="#e040fb" stroke="#aa00ff" stroke-width="2"/>
+                    <path d="M15,15 L25,25 M35,15 L25,25 M15,35 L25,25 M35,35 L25,25" stroke="#aa00ff" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="25" cy="25" r="5" fill="#ea80fc"/>
+                </svg>`
+            };
+            
+            // Initialize game elements
+            function initGame() {
+                poring.y = canvas.height / 2;
+                poring.velocity = 0;
+                poring.rotation = 0;
+                poring.rotationSpeed = 0;
+                poring.width = poring.originalWidth;
+                poring.height = poring.originalHeight;
+                pipes = [];
+                coinsArray = [];
+                powerupsArray = [];
+                particles = [];
+                effects = [];
+                activePowerups = {
+                    shield: false,
+                    magnet: false,
+                    speed: false,
+                    shrink: false
+                };
+                powerupTimers = {
+                    shield: 0,
+                    magnet: 0,
+                    speed: 0,
+                    shrink: 0
+                };
+                score = 0;
+                coins = 0;
+                powerupsUsed = 0;
+                levelProgress = 0;
+                currentLevel = 1;
+                gameSpeed = 1;
+                
+                scoreDisplay.textContent = score;
+                coinsDisplay.textContent = `Zeny: ${coins}`;
+                
+                // Reset status panel
+                statusPanel.innerHTML = '';
+                
+                // Show/hide progress bar based on game mode
+                if (gameMode === 'progression') {
+                    progressContainer.style.display = 'block';
+                    progressBar.style.width = '0%';
+                } else {
+                    progressContainer.style.display = 'none';
+                }
+                
+                // Create initial background elements
+                backgroundElements = [];
+                for (let i = 0; i < 3; i++) {
+                    backgroundElements.push({
+                        x: i * (bgCastleImg.width || 300),
+                        y: canvas.height - (bgCastleImg.height || 200),
+                        width: bgCastleImg.width || 300,
+                        height: bgCastleImg.height || 200,
+                        speed: 1
+                    });
+                }
+                
+                // Create initial clouds
+                clouds = [];
+                for (let i = 0; i < 8; i++) {
+                    clouds.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height * 0.5,
+                        width: 100 + Math.random() * 100,
+                        height: 50 + Math.random() * 50,
+                        speed: 0.5 + Math.random() * 1.5,
+                        opacity: 0.6 + Math.random() * 0.3
+                    });
+                }
+            }
+            
+            // Generate pipes (RO-themed obstacles)
+            function generatePipe() {
+                // Adjust gap size based on game mode and difficulty
+                let gap = 250; 
+                let minHeight = 100; 
+                
+                if (gameMode === 'progression') {
+                    // Make it slightly harder as levels increase but start easier
+                    gap = Math.max(220, 250 - (currentLevel * 3)); 
+                    
+                    // Add difficulty by varying pipe heights more in higher levels
+                    if (currentLevel > 4) { 
+                        minHeight = 100 + Math.random() * 50;
+                    }
+                }
+                
+                // If poring is shrunk, make the gap bigger
+                if (activePowerups.shrink) {
+                    gap += 40;
+                }
+                
+                const maxHeight = canvas.height - gap - minHeight;
+                const height = minHeight + Math.random() * (maxHeight - minHeight);
+                
+                pipes.push({
+                    x: canvas.width,
+                    y: 0,
+                    width: 100,
+                    height: height,
+                    passed: false,
+                    type: 'top'
+                });
+                
+                pipes.push({
+                    x: canvas.width,
+                    y: height + gap,
+                    width: 100,
+                    height: canvas.height - height - gap,
+                    passed: false,
+                    type: 'bottom'
+                });
+                
+                // Add coins between pipes (50% chance)
+                if (Math.random() > 0.5) {
+                    coinsArray.push({
+                        x: canvas.width + 50,
+                        y: height + gap / 2,
+                        width: 30,
+                        height: 30,
+                        collected: false,
+                        rotation: 0,
+                        rotationSpeed: 2 + Math.random() * 3
+                    });
+                }
+                
+                // Add powerups (less frequent than coins)
+                if (gameMode === 'progression' && Math.random() > 0.85) {
+                    // Choose a random powerup type
+                    const powerupTypes = ['shield', 'magnet', 'speed', 'shrink'];
+                    const type = powerupTypes[Math.floor(Math.random() * powerupTypes.length)];
+                    
+                    powerupsArray.push({
+                        x: canvas.width + 50,
+                        y: height + gap / 2 - 50, // Position above the coins
+                        width: 40,
+                        height: 40,
+                        type: type,
+                        collected: false,
+                        rotation: 0,
+                        rotationSpeed: 2 + Math.random() * 2,
+                        oscillation: Math.random() * Math.PI * 2 // Random starting phase
+                    });
+                }
+            }
+            
+            // Create particles
+            function createParticles(x, y, count, color) {
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: x,
+                        y: y,
+                        size: 2 + Math.random() * 4,
+                        speedX: -2 + Math.random() * 4,
+                        speedY: -2 + Math.random() * 4,
+                        color: color || '#FF69B4',
+                        life: 30 + Math.random() * 30,
+                        opacity: 1
+                    });
+                }
+            }
+            
+            // Create visual effects
+            function createEffect(x, y, type) {
+                effects.push({
+                    x: x,
+                    y: y,
+                    type: type,
+                    size: 30,
+                    life: 60,
+                    opacity: 1
+                });
+            }
+            
+            // Apply powerup effect
+            function applyPowerup(type) {
+                powerupsUsed++;
+                
+                activePowerups[type] = true;
+                
+                // Set duration based on powerup type
+                switch(type) {
+                    case 'shield':
+                        powerupTimers[type] = 300; // 5 seconds at 60fps
+                        break;
+                    case 'magnet':
+                        powerupTimers[type] = 600; // 10 seconds
+                        break;
+                    case 'speed':
+                        powerupTimers[type] = 480; // 8 seconds
+                        poring.jumpForce = -15; // Stronger jump
+                        break;
+                    case 'shrink':
+                        powerupTimers[type] = 420; // 7 seconds
+                        poring.width = poring.originalWidth * 0.6;
+                        poring.height = poring.originalHeight * 0.6;
+                        break;
+                }
+                
+                // Add status icon
+                updateStatusPanel();
+                
+                // Visual feedback
+                createEffect(poring.x + poring.width/2, poring.y + poring.height/2, type);
+                
+                // Sound effect could be added here
+            }
+            
+            // Update status panel
+            function updateStatusPanel() {
+                // Clear panel
+                statusPanel.innerHTML = '';
+                
+                // Add active powerups with timers
+                for (const [type, active] of Object.entries(activePowerups)) {
+                    if (active) {
+                        const remainingTime = Math.ceil(powerupTimers[type] / 60); // Convert to seconds
+                        const statusItem = document.createElement('div');
+                        statusItem.className = 'status-item';
+                        statusItem.innerHTML = `
+                            <div class="status-icon">${powerupIcons[type]}</div>
+                            <span>${remainingTime}s</span>
+                        `;
+                        statusPanel.appendChild(statusItem);
+                    }
+                }
+            }
+            
+            // Update game state
+            function update(timestamp) {
+                if (!lastTime) lastTime = timestamp;
+                deltaTime = (timestamp - lastTime) / 16.67; // Normalize to ~60fps
+                lastTime = timestamp;
+                
+                // Apply game speed in progression mode
+                const effectiveSpeed = gameMode === 'progression' ? gameSpeed : 1;
+                
+                // Update poring
+                poring.velocity += poring.gravity * deltaTime * effectiveSpeed;
+                poring.y += poring.velocity * deltaTime * effectiveSpeed;
+                
+                // Update rotation based on velocity
+                poring.rotationSpeed = poring.velocity * 0.1 * deltaTime * effectiveSpeed;
+                poring.rotation += poring.rotationSpeed;
+                
+                // Limit rotation
+                if (poring.rotation > 0.5) poring.rotation = 0.5;
+                if (poring.rotation < -0.5) poring.rotation = -0.5;
+                
+                // Check boundaries
+                if (poring.y < 0) {
+                    poring.y = 0;
+                    poring.velocity = 0;
+                }
+                
+                if (poring.y + poring.height > canvas.height) {
+                    if (activePowerups.shield) {
+                        // Shield protects from one impact
+                        activePowerups.shield = false;
+                        powerupTimers.shield = 0;
+                        updateStatusPanel();
+                        
+                        // Bounce back
+                        poring.y = canvas.height - poring.height;
+                        poring.velocity = -10;
+                        
+                        // Visual effect
+                        createParticles(poring.x + poring.width/2, poring.y + poring.height, 20, '#4fc3f7');
+                        createEffect(poring.x + poring.width/2, poring.y + poring.height/2, 'shield');
+                    } else {
+                        createParticles(poring.x + poring.width/2, poring.y + poring.height/2, 20, '#FF69B4');
+                        gameOver();
+                    }
+                }
+                
+                // Generate pipes
+                if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - 450) { 
+                    generatePipe();
+                }
+                
+                // Update pipes
+                for (let i = 0; i < pipes.length; i++) {
+                    // Speed up pipes with the speed powerup
+                    const pipeSpeed = 2.5 * (activePowerups.speed ? 1.5 : 1) * effectiveSpeed; 
+                    pipes[i].x -= pipeSpeed * deltaTime;
+                    
+                    // Check collision
+                    const collision = 
+                        poring.x + poring.width > pipes[i].x &&
+                        poring.x < pipes[i].x + pipes[i].width &&
+                        poring.y + poring.height > pipes[i].y &&
+                        poring.y < pipes[i].y + pipes[i].height;
+                    
+                    if (collision) {
+                        if (activePowerups.shield) {
+                            // Shield protects from one impact
+                            activePowerups.shield = false;
+                            powerupTimers.shield = 0;
+                            updateStatusPanel();
+                            
+                            // Visual effect
+                            createParticles(poring.x + poring.width/2, poring.y + poring.height/2, 20, '#4fc3f7');
+                            createEffect(poring.x + poring.width/2, poring.y + poring.height/2, 'shield');
+                            
+                            // Bounce away from obstacle
+                            if (poring.x + poring.width/2 < pipes[i].x + pipes[i].width/2) {
+                                poring.x -= 20; // Bounce left
+                            } else {
+                                poring.x += 20; // Bounce right
+                            }
+                            
+                            // Also bounce vertically
+                            poring.velocity = -poring.velocity;
+                        } else {
+                            createParticles(poring.x + poring.width/2, poring.y + poring.height/2, 20, '#FF69B4');
+                            gameOver();
+                        }
+                    }
+                    
+                    // Check if passed pipe
+                    if (!pipes[i].passed && pipes[i].x + pipes[i].width < poring.x) {
+                        pipes[i].passed = true;
+                        if (i % 2 === 0) { // Only count once per pair
+                            score++;
+                            
+                            // Update progress in progression mode
+                            if (gameMode === 'progression') {
+                                levelProgress += 5;
+                                if (levelProgress >= 100) {
+                                    levelUp();
+                                }
+                                
+                                // Update progress bar
+                                progressBar.style.width = `${levelProgress}%`;
+                            }
+                            
+                            scoreDisplay.textContent = score;
+                            createParticles(poring.x + poring.width/2, poring.y + poring.height/2, 10, '#FFFFFF');
+                        }
+                    }
+                }
+                
+                // Remove off-screen pipes
+                pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
+                
+                // Update coins
+                for (let i = 0; i < coinsArray.length; i++) {
+                    // Speed up coins with the speed powerup
+                    const coinSpeed = 3 * (activePowerups.speed ? 1.5 : 1) * effectiveSpeed;
+                    coinsArray[i].x -= coinSpeed * deltaTime;
+                    coinsArray[i].rotation += coinsArray[i].rotationSpeed * deltaTime * effectiveSpeed;
+                    
+                    // Magnet powerup attracts coins
+                    if (activePowerups.magnet && !coinsArray[i].collected) {
+                        // Calculate distance to poring
+                        const dx = poring.x + poring.width/2 - (coinsArray[i].x + coinsArray[i].width/2);
+                        const dy = poring.y + poring.height/2 - (coinsArray[i].y + coinsArray[i].height/2);
+                        const distance = Math.sqrt(dx*dx + dy*dy);
+                        
+                        // Attract coins within range
+                        if (distance < 200) {
+                            const speed = 5 * (1 - distance/200); // Stronger attraction when closer
+                            coinsArray[i].x += dx * speed * deltaTime * 0.02;
+                            coinsArray[i].y += dy * speed * deltaTime * 0.02;
+                        }
+                    }
+                    
+                    // Check coin collection
+                    if (!coinsArray[i].collected && 
+                        poring.x + poring.width > coinsArray[i].x &&
+                        poring.x < coinsArray[i].x + coinsArray[i].width &&
+                        poring.y + poring.height > coinsArray[i].y &&
+                        poring.y < coinsArray[i].y + coinsArray[i].height) {
+                        
+                        coinsArray[i].collected = true;
+                        coins++;
+                        score += 5; // Bonus points for zeny
+                        coinsDisplay.textContent = `Zeny: ${coins}`;
+                        scoreDisplay.textContent = score;
+                        
+                        // In progression mode, collecting coins helps level progress
+                        if (gameMode === 'progression') {
+                            levelProgress += 3;
+                            if (levelProgress >= 100) {
+                                levelUp();
+                            }
+                            
+                            // Update progress bar
+                            progressBar.style.width = `${levelProgress}%`;
+                        }
+                        
+                        createEffect(coinsArray[i].x + coinsArray[i].width/2, coinsArray[i].y + coinsArray[i].height/2, 'zeny');
+                        createParticles(coinsArray[i].x + coinsArray[i].width/2, coinsArray[i].y + coinsArray[i].height/2, 15, '#FFB400');
+                    }
+                }
+                
+                // Remove off-screen or collected coins
+                coinsArray = coinsArray.filter(coin => !coin.collected && coin.x + coin.width > 0);
+                
+                // Update powerups
+                for (let i = 0; i < powerupsArray.length; i++) {
+                    // Speed up powerups with the speed powerup
+                    const powerupSpeed = 3 * (activePowerups.speed ? 1.5 : 1) * effectiveSpeed;
+                    powerupsArray[i].x -= powerupSpeed * deltaTime;
+                    powerupsArray[i].rotation += powerupsArray[i].rotationSpeed * deltaTime * effectiveSpeed;
+                    
+                    // Make powerups float up and down
+                    powerupsArray[i].oscillation += 0.02 * deltaTime * effectiveSpeed;
+                    powerupsArray[i].y += Math.sin(powerupsArray[i].oscillation) * deltaTime * 0.5;
+                    
+                    // Check powerup collection
+                    if (!powerupsArray[i].collected && 
+                        poring.x + poring.width > powerupsArray[i].x &&
+                        poring.x < powerupsArray[i].x + powerupsArray[i].width &&
+                        poring.y + poring.height > powerupsArray[i].y &&
+                        poring.y < powerupsArray[i].y + powerupsArray[i].height) {
+                        
+                        powerupsArray[i].collected = true;
+                        applyPowerup(powerupsArray[i].type);
+                        score += 10; // Bonus points for powerups
+                        scoreDisplay.textContent = score;
+                        
+                        createEffect(powerupsArray[i].x + powerupsArray[i].width/2, 
+                                    powerupsArray[i].y + powerupsArray[i].height/2, 
+                                    powerupsArray[i].type);
+                        
+                        // Different particle colors based on powerup type
+                        let particleColor;
+                        switch (powerupsArray[i].type) {
+                            case 'shield': particleColor = '#4fc3f7'; break;
+                            case 'magnet': particleColor = '#f44336'; break;
+                            case 'speed': particleColor = '#76ff03'; break;
+                            case 'shrink': particleColor = '#e040fb'; break;
+                            default: particleColor = '#ffffff';
+                        }
+                        
+                        createParticles(powerupsArray[i].x + powerupsArray[i].width/2, 
+                                       powerupsArray[i].y + powerupsArray[i].height/2, 
+                                       20, particleColor);
+                    }
+                }
+                
+                // Remove off-screen or collected powerups
+                powerupsArray = powerupsArray.filter(powerup => !powerup.collected && powerup.x + powerup.width > 0);
+                
+                // Update powerup timers
+                for (const [type, active] of Object.entries(activePowerups)) {
+                    if (active) {
+                        powerupTimers[type] -= deltaTime * effectiveSpeed;
+                        
+                        if (powerupTimers[type] <= 0) {
+                            activePowerups[type] = false;
+                            
+                            // Restore original properties when powerup ends
+                            if (type === 'speed') {
+                                poring.jumpForce = -12; // Restore normal jump
+                            } else if (type === 'shrink') {
+                                poring.width = poring.originalWidth;
+                                poring.height = poring.originalHeight;
+                            }
+                        }
+                    }
+                }
+                
+                // Update status panel every second
+                if (Math.floor(timestamp / 1000) !== Math.floor((timestamp - deltaTime * 16.67) / 1000)) {
+                    updateStatusPanel();
+                }
+                
+                // Update background elements
+                for (let i = 0; i < backgroundElements.length; i++) {
+                    backgroundElements[i].x -= backgroundElements[i].speed * deltaTime * effectiveSpeed;
+                    
+                    // Loop background
+                    if (backgroundElements[i].x + backgroundElements[i].width < 0) {
+                        backgroundElements[i].x = backgroundElements.length < 2 ? canvas.width : 
+                            Math.max(...backgroundElements.map(bg => bg.x + bg.width));
+                    }
+                }
+                
+                // Update clouds
+                for (let i = 0; i < clouds.length; i++) {
+                    clouds[i].x -= clouds[i].speed * deltaTime * effectiveSpeed;
+                    
+                    // Loop clouds
+                    if (clouds[i].x + clouds[i].width < 0) {
+                        clouds[i].x = canvas.width;
+                        clouds[i].y = Math.random() * canvas.height * 0.5;
+                    }
+                }
+                
+                // Update particles
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    particles[i].x += particles[i].speedX * deltaTime * effectiveSpeed;
+                    particles[i].y += particles[i].speedY * deltaTime * effectiveSpeed;
+                    particles[i].life -= deltaTime * effectiveSpeed;
+                    particles[i].opacity = particles[i].life / 60;
+                    
+                    if (particles[i].life <= 0) {
+                        particles.splice(i, 1);
+                    }
+                }
+                
+                // Update effects
+                for (let i = effects.length - 1; i >= 0; i--) {
+                    effects[i].life -= deltaTime * effectiveSpeed;
+                    effects[i].opacity = effects[i].life / 60;
+                    effects[i].size += 1 * deltaTime * effectiveSpeed;
+                    
+                    if (effects[i].life <= 0) {
+                        effects.splice(i, 1);
+                    }
+                }
+            }
+            
+            // Level up in progression mode
+            function levelUp() {
+                currentLevel++;
+                levelProgress = 0;
+                
+                // Update difficulty
+                gameSpeed = 1 + (currentLevel - 1) * 0.1; // Increase speed gradually
+                
+                // Visual feedback
+                createEffect(canvas.width/2, canvas.height/2, 'levelup');
+                
+                // Create level-up text effect
+                const levelUpText = {
+                    text: `LEVEL ${currentLevel}!`,
+                    x: canvas.width/2,
+                    y: canvas.height/2,
+                    size: 60,
+                    opacity: 1,
+                    life: 120
+                };
+                
+                effects.push(levelUpText);
+                
+                // Add particles
+                createParticles(canvas.width/2, canvas.height/2, 50, '#FFD700');
+            }
+            
+            // Draw game
+            function draw() {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw sky gradient
+                const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                skyGradient.addColorStop(0, '#6ab7ff');
+                skyGradient.addColorStop(0.5, '#3a7bd5');
+                skyGradient.addColorStop(1, '#1a1a2e');
+                ctx.fillStyle = skyGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw sun with glow effect
+                ctx.save();
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 30;
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(canvas.width - 100, 100, 40, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                
+                // Draw sun rays
+                ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
+                ctx.lineWidth = 3;
+                for (let i = 0; i < 12; i++) {
+                    const angle = (i / 12) * Math.PI * 2;
+                    ctx.beginPath();
+                    ctx.moveTo(
+                        canvas.width - 100 + Math.cos(angle) * 40,
+                        100 + Math.sin(angle) * 40
+                    );
+                    ctx.lineTo(
+                        canvas.width - 100 + Math.cos(angle) * 60,
+                        100 + Math.sin(angle) * 60
+                    );
+                    ctx.stroke();
+                }
+                
+                // Draw clouds
+                for (const cloud of clouds) {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${cloud.opacity})`;
+                    ctx.beginPath();
+                    
+                    // Main cloud body
+                    ctx.ellipse(
+                        cloud.x, cloud.y, 
+                        cloud.width / 2, cloud.height / 2, 
+                        0, 0, Math.PI * 2
+                    );
+                    ctx.fill();
+                    
+                    // Cloud details
+                    ctx.beginPath();
+                    ctx.ellipse(
+                        cloud.x - cloud.width * 0.2, 
+                        cloud.y + cloud.height * 0.2, 
+                        cloud.width * 0.3, cloud.height * 0.4, 
+                        0, 0, Math.PI * 2
+                    );
+                    ctx.ellipse(
+                        cloud.x + cloud.width * 0.2, 
+                        cloud.y + cloud.height * 0.1, 
+                        cloud.width * 0.3, cloud.height * 0.5, 
+                        0, 0, Math.PI * 2
+                    );
+                    ctx.fill();
+                }
+                
+                // Draw background castle
+                for (const bg of backgroundElements) {
+                    if (bgCastleImg.complete) {
+                        ctx.drawImage(bgCastleImg, bg.x, bg.y, bg.width, bg.height);
+                    } else {
+                        ctx.fillStyle = '#8b4523';
+                        ctx.fillRect(bg.x, bg.y, bg.width, bg.height);
+                    }
+                }
+                
+                // Draw pipes (RO-themed castle obstacles)
+                for (const pipe of pipes) {
+                    if (pipe.type === 'top' && topObstacleImg.complete) {
+                        ctx.drawImage(topObstacleImg, pipe.x, pipe.y, pipe.width, pipe.height);
+                    } else if (pipe.type === 'bottom' && bottomObstacleImg.complete) {
+                        ctx.drawImage(bottomObstacleImg, pipe.x, pipe.y, pipe.width, pipe.height);
+                    } else {
+                        // Fallback if images don't load
+                        ctx.fillStyle = pipe.type === 'top' ? '#8b4523' : '#d4c43e';
+                        ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+                        ctx.strokeStyle = '#000';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(pipe.x, pipe.y, pipe.width, pipe.height);
+                    }
+                }
+                
+                // Draw coins
+                for (const coin of coinsArray) {
+                    ctx.save();
+                    ctx.translate(coin.x + coin.width / 2, coin.y + coin.height / 2);
+                    ctx.rotate(coin.rotation * Math.PI / 180);
+                    
+                    if (coinImg.complete) {
+                        ctx.drawImage(coinImg, -coin.width / 2, -coin.height / 2, coin.width, coin.height);
+                    } else {
+                        // Fallback coin drawing
+                        ctx.fillStyle = '#FFB400';
+                        ctx.beginPath();
+                        ctx.arc(0, 0, coin.width / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.strokeStyle = '#CC8C00';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                        
+                        // Coin details
+                        ctx.strokeStyle = '#CC8C00';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(0, -coin.width / 2);
+                        ctx.lineTo(0, coin.width / 2);
+                        ctx.stroke();
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(-coin.width / 2, 0);
+                        ctx.lineTo(coin.width / 2, 0);
+                        ctx.stroke();
+                    }
+                    
+                    // Add glow effect to coins
+                    ctx.shadowColor = '#FFD700';
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, coin.width / 2 + 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.restore();
+                }
+                
+                // Draw powerups
+                for (const powerup of powerupsArray) {
+                    ctx.save();
+                    ctx.translate(powerup.x + powerup.width / 2, powerup.y + powerup.height / 2);
+                    ctx.rotate(powerup.rotation * Math.PI / 180);
+                    
+                    // Draw powerup based on type
+                    let iconSvg = powerupIcons[powerup.type] || '';
+                    
+                    // Create a temporary div to convert SVG string to dimensions
+                    const tempContainer = document.createElement('div');
+                    tempContainer.innerHTML = iconSvg;
+                    const svgElement = tempContainer.querySelector('svg');
+                    
+                    if (svgElement) {
+                        // Create image from SVG
+                        const svgData = new XMLSerializer().serializeToString(svgElement);
+                        const imgSrc = 'data:image/svg+xml;base64,' + btoa(svgData);
+                        
+                        const img = new Image();
+                        img.src = imgSrc;
+                        
+                        // Draw the image if loaded
+                        if (img.complete) {
+                            ctx.drawImage(img, -powerup.width / 2, -powerup.height / 2, powerup.width, powerup.height);
+                        }
+                    } else {
+                        // Fallback - draw a circle with the appropriate color
+                        const colors = {
+                            'shield': '#4fc3f7',
+                            'magnet': '#f44336',
+                            'speed': '#76ff03',
+                            'shrink': '#e040fb'
+                        };
+                        
+                        ctx.fillStyle = colors[powerup.type] || '#ffffff';
+                        ctx.beginPath();
+                        ctx.arc(0, 0, powerup.width / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.strokeStyle = '#000';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+                    
+                    // Add glow effect to powerups
+                    const glowColors = {
+                        'shield': 'rgba(79, 195, 247, 0.5)',
+                        'magnet': 'rgba(244, 67, 54, 0.5)',
+                        'speed': 'rgba(118, 255, 3, 0.5)',
+                        'shrink': 'rgba(224, 64, 251, 0.5)'
+                    };
+                    
+                    ctx.shadowColor = glowColors[powerup.type] || 'rgba(255, 255, 255, 0.5)';
+                    ctx.shadowBlur = 15;
+                    ctx.fillStyle = glowColors[powerup.type] || 'rgba(255, 255, 255, 0.3)';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, powerup.width / 2 + 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.restore();
+                }
+                
+                // Draw particles
+                for (const particle of particles) {
+                    ctx.fillStyle = particle.color;
+                    ctx.globalAlpha = particle.opacity;
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+                
+                // Draw effects
+                for (const effect of effects) {
+                    ctx.globalAlpha = effect.opacity;
+                    
+                    if (effect.type === 'coin' || effect.type === 'zeny') {
+                        ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+                        ctx.beginPath();
+                        ctx.arc(effect.x, effect.y, effect.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (effect.type === 'shield') {
+                        ctx.fillStyle = 'rgba(79, 195, 247, 0.3)';
+                        ctx.beginPath();
+                        ctx.arc(effect.x, effect.y, effect.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (effect.type === 'magnet') {
+                        ctx.fillStyle = 'rgba(244, 67, 54, 0.3)';
+                        ctx.beginPath();
+                        ctx.arc(effect.x, effect.y, effect.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (effect.type === 'speed') {
+                        ctx.fillStyle = 'rgba(118, 255, 3, 0.3)';
+                        ctx.beginPath();
+                        ctx.arc(effect.x, effect.y, effect.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (effect.type === 'shrink') {
+                        ctx.fillStyle = 'rgba(224, 64, 251, 0.3)';
+                        ctx.beginPath();
+                        ctx.arc(effect.x, effect.y, effect.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (effect.type === 'levelup') {
+                        ctx.fillStyle = 'rgba(255, 215, 0, 0.3)';
+                        ctx.beginPath();
+                        ctx.arc(effect.x, effect.y, effect.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (effect.text) {
+                        // Draw text effects (like level up)
+                        ctx.font = `${effect.size}px 'Press Start 2P'`;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = '#FFD700';
+                        ctx.strokeStyle = '#000';
+                        ctx.lineWidth = 3;
+                        ctx.strokeText(effect.text, effect.x, effect.y);
+                        ctx.fillText(effect.text, effect.x, effect.y);
+                    }
+                }
+                ctx.globalAlpha = 1;
+                
+                // Draw poring with rotation and shadow
+                ctx.save();
+                
+                // Draw shadow
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                ctx.beginPath();
+                ctx.ellipse(
+                    poring.x + poring.width / 2, 
+                    canvas.height - 20, 
+                    poring.width / 2, 
+                    poring.width / 8, 
+                    0, 0, Math.PI * 2
+                );
+                ctx.fill();
+                
+                // Draw poring with rotation
+                ctx.translate(poring.x + poring.width / 2, poring.y + poring.height / 2);
+                ctx.rotate(poring.rotation);
+                
+                // Add shield effect if active
+                if (activePowerups.shield) {
+                    ctx.shadowColor = '#4fc3f7';
+                    ctx.shadowBlur = 15;
+                    ctx.strokeStyle = 'rgba(79, 195, 247, 0.8)';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, poring.width / 2 + 5, 0, Math.PI * 2);
+                    ctx.stroke();
+                    
+                    // Add pulsing shield
+                    ctx.fillStyle = 'rgba(79, 195, 247, 0.2)';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, poring.width / 2 + 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Add glow effect when jumping
+                if (poring.velocity < 0) {
+                    ctx.shadowColor = '#FFFFFF';
+                    ctx.shadowBlur = 15;
+                }
+                
+                // Add speed effect
+                if (activePowerups.speed) {
+                    ctx.shadowColor = '#76ff03';
+                    ctx.shadowBlur = 15;
+                    
+                    // Speed trails
+                    ctx.globalAlpha = 0.3;
+                    ctx.translate(-5, 0);
+                    if (poringImg.complete) {
+                        ctx.drawImage(poringImg, -poring.width / 2, -poring.height / 2, poring.width, poring.height);
+                    }
+                    
+                    ctx.translate(-10, 0);
+                    ctx.globalAlpha = 0.1;
+                    if (poringImg.complete) {
+                        ctx.drawImage(poringImg, -poring.width / 2, -poring.height / 2, poring.width, poring.height);
+                    }
+                    
+                    ctx.translate(15, 0);
+                    ctx.globalAlpha = 1;
+                }
+                
+                // Draw the main poring
+                if (poringImg.complete) {
+                    ctx.drawImage(poringImg, -poring.width / 2, -poring.height / 2, poring.width, poring.height);
+                    
+                } else {
+                    // Fallback poring drawing
+                    // Body
+                    ctx.fillStyle = '#FF69B4';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, poring.width / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Eyes
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(-15 * (poring.width/60), -10 * (poring.height/60), 10 * (poring.width/60), 0, Math.PI * 2);
+                    ctx.arc(15 * (poring.width/60), -10 * (poring.height/60), 10 * (poring.width/60), 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    
+                    // Pupils
+                    ctx.fillStyle = '#000';
+                    ctx.beginPath();
+                    ctx.arc(-15 * (poring.width/60), -10 * (poring.height/60), 5 * (poring.width/60), 0, Math.PI * 2);
+                    ctx.arc(15 * (poring.width/60), -10 * (poring.height/60), 5 * (poring.width/60), 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Mouth
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 2 * (poring.width/60);
+                    ctx.beginPath();
+                    ctx.arc(0, 15 * (poring.height/60), 12 * (poring.width/60), 0, Math.PI);
+                    ctx.stroke();
+                    
+                    // Highlight
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(-5 * (poring.width/60), -15 * (poring.height/60), 3 * (poring.width/60), 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Add magnet visual effect
+                if (activePowerups.magnet) {
+                    const magnetRadius = 50 + Math.sin(Date.now() * 0.01) * 5;
+                    ctx.strokeStyle = 'rgba(244, 67, 54, 0.5)';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.arc(0, 0, magnetRadius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    
+                    // Add small particles orbiting the poring
+                    const particleCount = 5;
+                    const time = Date.now() * 0.005;
+                    
+                    for (let i = 0; i < particleCount; i++) {
+                        const angle = (i / particleCount) * Math.PI * 2 + time;
+                        const x = Math.cos(angle) * magnetRadius;
+                        const y = Math.sin(angle) * magnetRadius;
+                        
+                        ctx.fillStyle = 'rgba(244, 67, 54, 0.7)';
+                        ctx.beginPath();
+                        ctx.arc(x, y, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+                
+                ctx.restore();
+                
+                // Draw ground with more detail
+                ctx.fillStyle = '#5d4037';
+                ctx.fillRect(0, canvas.height - 30, canvas.width, 30);
+                
+                // Draw grass on top of ground
+                ctx.fillStyle = '#4CAF50';
+                for (let x = 0; x < canvas.width; x += 20) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, canvas.height - 30);
+                    ctx.lineTo(x + 10, canvas.height - 50);
+                    ctx.lineTo(x + 20, canvas.height - 30);
+                    ctx.fill();
+                }
+                
+                // Draw ground details (stones)
+                ctx.fillStyle = '#8D6E63';
+                for (let x = 0; x < canvas.width; x += 40) {
+                    const size = 3 + Math.random() * 7;
+                    ctx.beginPath();
+                    ctx.arc(x + Math.random() * 20, canvas.height - 30 + Math.random() * 5, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Draw level indicator in progression mode
+                if (gameMode === 'progression') {
+                    ctx.font = '20px "Press Start 2P"';
+                    ctx.fillStyle = '#fff';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(`LEVEL ${currentLevel}`, 20, 100);
+                }
+            }
+            
+            // Game loop
+            function gameLoop(timestamp) {
+                update(timestamp);
+                draw();
+                
+                if (gameRunning) {
+                    animationId = requestAnimationFrame(gameLoop);
+                }
+            }
+            
+            // Jump function
+            function jump() {
+                if (!gameRunning) return;
+                
+                // Higher jump with speed powerup
+                poring.velocity = poring.jumpForce;
+                poring.rotationSpeed = -0.2;
+                
+                // Add jump class to trigger animation
+                const poringElement = document.querySelector('#start-screen img');
+                if (poringElement) {
+                    poringElement.classList.add('poring-jump-effect');
+                    setTimeout(() => {
+                        poringElement.classList.remove('poring-jump-effect');
+                    }, 500);
+                }
+
+                createParticles(poring.x + poring.width/2, poring.y + poring.height, 5, '#FFFFFF');
+                createEffect(poring.x + poring.width/2, poring.y + poring.height/2, 'jump');
+            }
+            
+            // Game over
+            function gameOver() {
+                gameRunning = false;
+                cancelAnimationFrame(animationId);
+                
+                // Check if new high score
+                let highScoreData = JSON.parse(localStorage.getItem('flappyPoringHighScore') || '{}');
+                const isNewHighScore = 
+                    !highScoreData.score || 
+                    score > highScoreData.score || 
+                    (score === highScoreData.score && coins > (highScoreData.coins || 0));
+                
+                if (isNewHighScore) {
+                    // Show nickname input
+                    const highScoreInputSection = document.getElementById('high-score-input');
+                    highScoreInputSection.style.display = 'block';
+                    document.getElementById('nickname-input').value = highScoreData.nickname || '';
+                } else {
+                    // Hide nickname input
+                    document.getElementById('high-score-input').style.display = 'none';
+                }
+                
+                finalScoreDisplay.textContent = `Score: ${score} | Zeny: ${coins}`;
+                
+                // Display high score with nickname if available
+                const displayHighScore = highScoreData.score 
+                    ? `High Score: ${highScoreData.score} | Zeny: ${highScoreData.coins} (${highScoreData.nickname || 'Anonymous'})` 
+                    : 'No high score yet';
+                
+                highScoreDisplay.textContent = displayHighScore;
+                powerupsUsedDisplay.textContent = `Powerups Used: ${powerupsUsed}`;
+                
+                gameOverScreen.style.display = 'flex';
+                musicControl.style.display = 'block'; // 
+            }
+
+            // Retrieve existing high score data
+            let highScoreData = JSON.parse(localStorage.getItem('flappyPoringHighScore') || '{}');
+            const nicknameInput = document.getElementById('nickname-input');
+            const saveNicknameBtn = document.getElementById('save-nickname-btn');
+            const highScoreInputSection = document.getElementById('high-score-input');
+
+            // Save nickname event listener
+            saveNicknameBtn.addEventListener('click', () => {
+                const nickname = nicknameInput.value.trim() || 'Anonymous';
+                
+                // Update high score data
+                highScoreData = {
+                    score: score,
+                    coins: coins,
+                    nickname: nickname,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save to localStorage
+                localStorage.setItem('flappyPoringHighScore', JSON.stringify(highScoreData));
+                
+                // Hide input section and update display
+                highScoreInputSection.style.display = 'none';
+                highScoreDisplay.textContent = `High Score: ${score} | Zeny: ${coins} (${nickname})`;
+            });
+            
+            // Start game with selected mode
+            function startGame(mode) {
+                gameMode = mode;
+                startScreen.style.display = 'none';
+                musicControl.style.display = 'none'; // Hide during gameplay
+                gameRunning = true;
+                lastTime = 0;
+                initGame();
+                animationId = requestAnimationFrame(gameLoop);
+                startMusic();
+            }
+            
+            // Event listeners
+            classicModeBtn.addEventListener('click', () => {
+                startGame('classic');
+            });
+            
+            progressionModeBtn.addEventListener('click', () => {
+                startGame('progression');
+            });
+            
+            restartBtn.addEventListener('click', () => {
+                gameOverScreen.style.display = 'none';
+                gameRunning = true;
+                lastTime = 0;
+                initGame();
+                animationId = requestAnimationFrame(gameLoop);
+                if (!isMusicPlaying) {
+                    startMusic();
+                }
+            });
+            
+            menuBtn.addEventListener('click', () => {
+                gameOverScreen.style.display = 'none';
+                startScreen.style.display = 'flex';
+                musicControl.style.display = 'block'; // 
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    jump();
+                }
+            });
+            
+            canvas.addEventListener('click', () => {
+                jump();
+            });
+            
+            // Touch support for mobile
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                jump();
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                if (gameRunning) {
+                    // Adjust poring position
+                    poring.y = Math.min(poring.y, canvas.height - poring.height);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
